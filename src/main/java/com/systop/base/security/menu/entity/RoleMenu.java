@@ -1,0 +1,50 @@
+package com.systop.base.security.menu.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
+import com.systop.base.security.menu.support.MenuType;
+import com.systop.core.entity.IdEntity;
+
+/**
+ * 角色资源表
+ * 
+ * @company 新龙科技
+ * @author zhangpeiran
+ * @version
+ * @date 2016年5月9日 上午10:12:22
+ */
+@Entity
+@Table(name = "sys_role_menu")
+public class RoleMenu extends IdEntity {
+
+	private Long roleId;
+	private Long menuId;
+	@Enumerated(EnumType.ORDINAL)
+	private MenuType menuType;// 菜单类型
+
+	public Long getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
+	}
+
+	public Long getMenuId() {
+		return menuId;
+	}
+
+	public void setMenuId(Long menuId) {
+		this.menuId = menuId;
+	}
+
+	public MenuType getMenuType() {
+		return menuType;
+	}
+
+	public void setMenuType(MenuType menuType) {
+		this.menuType = menuType;
+	}
+}
