@@ -17,7 +17,7 @@ import com.systop.core.entity.IdEntity;
 @Table(name = "sys_role")
 public class Role extends IdEntity {
 	@Column(unique = true)
-	private String name;// 角色名称,唯一
+	private String name;// 角色code码,请用英文.
 	private String description;// 角色描述
 
 	public String getName() {

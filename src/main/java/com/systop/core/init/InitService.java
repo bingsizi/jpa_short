@@ -55,7 +55,7 @@ public class InitService implements ApplicationListener<ContextRefreshedEvent> {
 				userManager.setType(MenuType.菜单);
 				userManager.setSeq(1);
 				userManager.setIcon("icon-user");
-				userManager.setPermission("/user");
+				userManager.setPermission("/security/user");
 				serviceManagerManager.menuService.save(userManager);
 				
 				Menu roleManager = new Menu();
@@ -65,7 +65,7 @@ public class InitService implements ApplicationListener<ContextRefreshedEvent> {
 				roleManager.setType(MenuType.菜单);
 				roleManager.setSeq(2);
 				roleManager.setIcon("icon-role");
-				roleManager.setPermission("/role");
+				roleManager.setPermission("/security/role");
 				serviceManagerManager.menuService.save(roleManager);
 				
 				Menu menuManager = new Menu();
@@ -75,8 +75,8 @@ public class InitService implements ApplicationListener<ContextRefreshedEvent> {
 				menuManager.setType(MenuType.菜单);
 				menuManager.setSeq(3);
 				menuManager.setIcon("icon-menu");
-				menuManager.setPermission("/menu");
-				menuManager.setUrl("/menu/index");
+				menuManager.setPermission("/security/menu");
+				menuManager.setUrl("/security/menu/index");
 				serviceManagerManager.menuService.save(menuManager);
 				
 				Menu onUserManager = new Menu();
@@ -86,7 +86,7 @@ public class InitService implements ApplicationListener<ContextRefreshedEvent> {
 				onUserManager.setType(MenuType.菜单);
 				onUserManager.setSeq(4);
 				onUserManager.setIcon("icon-online");
-				onUserManager.setPermission("/online");
+				onUserManager.setPermission("/security/online");
 				serviceManagerManager.menuService.save(onUserManager);
 				
 				//初始化角色

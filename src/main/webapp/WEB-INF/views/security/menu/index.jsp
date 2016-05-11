@@ -13,6 +13,13 @@ function getSelected() {
 	var selected = $('#menuGrid').datagrid('getSelected');
 	return selected;
 }
+//查询
+function searchForm(){
+	var param = $('#searchForm').serialize();
+	$('#menuGrid').datagrid({
+		url : "${ctx}/menu/list?" + param
+	});
+}
 //提交表单
 function formSubmit(operation){
 	//验证表达提交是否有问题

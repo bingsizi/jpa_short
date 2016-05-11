@@ -15,7 +15,7 @@ import com.systop.core.controller.BaseController;
  * @version 
  * @date 2016年5月11日 上午9:57:59
  */
-@RequestMapping("menu")
+@RequestMapping("/security/menu")
 @Controller
 public class MenuController extends BaseController{
 	/**
@@ -24,7 +24,7 @@ public class MenuController extends BaseController{
 	 */
 	@RequestMapping(value = "index")
 	public String index() {
-		return "menu/index";
+		return "security/menu/index";
 	}
 	/**
 	 * 得到所有的菜单
