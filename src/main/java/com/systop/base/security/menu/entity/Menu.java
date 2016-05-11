@@ -45,14 +45,14 @@ public class Menu extends IdEntity implements Serializable{
 	private String methodName;// 可访问类中的方法.默认为空.表示全部可以访问
 	private String description;// 描述
 	
-	@Transient
+	/**非持久化 字段**/
 	private String parentName;//上级菜单名称
 	
-	
+	@Transient
 	public String getParentName() {
 		return parentName;
 	}
-	@Transient
+	
 	public void setParentName(String parentName) {
 		this.parentName = parentName;
 	}
