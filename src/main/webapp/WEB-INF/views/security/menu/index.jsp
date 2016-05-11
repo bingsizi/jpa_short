@@ -17,7 +17,7 @@ function getSelected() {
 function searchForm(){
 	var param = $('#searchForm').serialize();
 	$('#menuGrid').datagrid({
-		url : "${ctx}/menu/list?" + param
+		url : "${ctx}/security/menu/list?" + param
 	});
 }
 //提交表单
@@ -29,9 +29,9 @@ function formSubmit(operation){
 	}
 	var url="";
 	if(operation=='save')
-	   url='${ctx}/menu/save';
+	   url='${ctx}/security/menu/save';
 	else if(operation='edit')
-	   url='${ctx}/menu/update';
+	   url='${ctx}/security/menu/update';
 	//提交数据
 	$.ajax({
 		  url: url,
@@ -39,7 +39,7 @@ function formSubmit(operation){
 		  type:'post',
 		  data: $('#menuForm').serialize(),
 		  success: function(data){
-			  Popbox.topCenter("系统消息",data.message);
+			  Popbox.topCenter(data.message);
 			  if(data.success){
 				  $("#menuGrid").datagrid("reload");
 				  $('#menuDialog').dialog('close');
@@ -50,7 +50,7 @@ function formSubmit(operation){
 //初始化数据
 $(function(){
 	$("#menuGrid").datagrid({
-		url:'${ctx}/menu/list',
+		url:'${ctx}/security/menu/list',
 		fitColumns:true,
 		fit:true,
 		nowrap:true,
@@ -64,7 +64,7 @@ $(function(){
             {field:"id", title:"ID", width:10},
 			{field:"name", title:"名称", width:10},
 			{field:"type", title:"类型", width:10},
-			{field:"url", title:"请求地址", width:10},
+			{field:"indexUrl", title:"响应地址", width:10},
 			{field:"permission", title:"权限",width:10},
 			{field:"parentId", title:"上级菜单",width:10},
 			{field:"parentIds", title:"所有上级",width:10},
@@ -81,7 +81,7 @@ function add(){
  	$("#save").show();
  	$("#edit").hide();
  	$("#menuForm").form('clear');
- 	var url = "${ctx}/menu/rootMenu";
+ 	var url = "${ctx}/security/menu/rootMenu";
 	$("#parentId").combobox("reload", url);
 }
 
@@ -108,12 +108,12 @@ function del(){
 		$.messager.confirm('消息提醒', '确定删该菜单吗?此操作不可恢复!', function(r){
 		if (r){
 			//提交数据
-			$.getJSON("${ctx}/menu/delete",{id:selected.id},function(json){
+			$.getJSON("${ctx}/security/menu/delete",{id:selected.id},function(json){
 				if(json.success){
 					var index = $('#menuGrid').datagrid('getRowIndex', selected);
 					$('#menuGrid').datagrid('deleteRow', index);
 				}
-				Popbox.topCenter("系统消息",json.message);
+				Popbox.topCenter(json.message);
 			});
 		}
 	});
@@ -137,7 +137,7 @@ function del(){
 </div>
 <!-- 增加/修改菜单框 -->
 <div id="menuDialog" class="easyui-dialog" style="width:390px; height:400px; padding:10px 20px;" closed="true">
-	<form action="" id="menuForm">
+	<form  id="menuForm">
 	    <input type="hidden" name="id"/>
 		<table width="100%" cellpadding="0" cellspacing="0" class="oper_table">
 			<tr>
@@ -158,25 +158,25 @@ function del(){
 			<tr>
 				<td class="td_marked">上级菜单：</td>
 				<td class="td_content">
-				   <select style="width: 140px;" id="parentId" name="parentId" class="easyui-combobox" data-options="url:'${ctx}/menu/rootMenu',valueField:'id',textField:'name',editable:false,value:''"></select>
+				   <select style="width: 140px;" id="parentId" name="parentId" class="easyui-combobox" data-options="url:'${ctx}/security/menu/rootMenu',valueField:'id',textField:'name',editable:false,value:''"></select>
 				</td>
 			</tr>
 			<tr>
 				<td class="td_marked">菜单URL：</td>
 				<td class="td_content">
-				   <input id="menuUrl" type="text" name="url" class="easyui-validatebox" data-options="validType:'length[0,50]'"/>
+				   <input type="text" name="indexUrl" class="easyui-validatebox" data-options="validType:'length[0,50]'"/>
 				</td>
 			</tr>
 			<tr>
 				<td class="td_marked">菜单排序：</td>
 				<td class="td_content">
-				   <input id="seq" type="text" name="seq" class="easyui-validatebox" data-options="required:true,validType:'length[1,20]'"/>
+				   <input type="text" name="seq" class="easyui-validatebox" data-options="required:true,validType:'length[1,20]'"/>
 				</td>
 			</tr>
 			<tr>
 				<td class="td_marked">权限：</td>
 				<td class="td_content">
-				   <input id="className" type="text" name="permission" class="easyui-validatebox" data-options="validType:'length[0,100]'"/>
+				   <input type="text" name="permission" class="easyui-validatebox" data-options="validType:'length[0,100]'"/>
 				</td>
 			</tr>
 		</table>

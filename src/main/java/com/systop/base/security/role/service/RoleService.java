@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import com.systop.base.security.menu.service.RoleMenuService;
 import com.systop.base.security.role.entity.Role;
 import com.systop.base.security.role.entity.UserRole;
 import com.systop.core.service.BaseGenericsService;
@@ -23,7 +25,33 @@ public class RoleService extends BaseGenericsService<Role> {
 
 	@Resource
 	private UserRoleService userRoleService;
-
+	@Resource
+	private RoleMenuService roleMenuService;
+	
+	/**
+	 * 删除角色,连同角色菜单表中的数据一起删除
+	 * @param role
+	 * @author zhangpeiran 2016年5月11日 下午2:26:27
+	 */
+	@Override
+	public void remove(Role role){
+		//删除角色菜单表中对应数据
+		Map<String,Object> paramMap = new HashMap<>();
+		paramMap.put("roleId",role.getId());
+		roleMenuService.executeUpdate("delete from RoleMenu where roleId = :roleId", paramMap);
+		//删除角色
+		super.remove(role);
+	}
+	
+	/**
+	 * 判断角色有没有被使用
+	 * @param id
+	 * @return
+	 * @author zhangpeiran 2016年5月11日 下午2:23:28
+	 */
+	public boolean isUsed(Long id){
+		return userRoleService.isRoleUsed(id);
+	}
 	/**
 	 * 根据ids获得roles
 	 * 

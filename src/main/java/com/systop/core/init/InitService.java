@@ -66,6 +66,7 @@ public class InitService implements ApplicationListener<ContextRefreshedEvent> {
 				roleManager.setSeq(2);
 				roleManager.setIcon("icon-role");
 				roleManager.setPermission("/security/role");
+				roleManager.setIndexUrl("/security/role/index");
 				serviceManagerManager.menuService.save(roleManager);
 				
 				Menu menuManager = new Menu();
@@ -76,7 +77,7 @@ public class InitService implements ApplicationListener<ContextRefreshedEvent> {
 				menuManager.setSeq(3);
 				menuManager.setIcon("icon-menu");
 				menuManager.setPermission("/security/menu");
-				menuManager.setUrl("/security/menu/index");
+				menuManager.setIndexUrl("/security/menu/index");
 				serviceManagerManager.menuService.save(menuManager);
 				
 				Menu onUserManager = new Menu();

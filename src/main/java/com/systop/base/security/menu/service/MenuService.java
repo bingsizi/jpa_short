@@ -180,7 +180,7 @@ public class MenuService extends BaseGenericsService<Menu>{
  			for(Menu subMenu:subMenuList){
  				String name = (subMenu.getName()==null)?"":subMenu.getName();
  				String icon = (subMenu.getIcon()==null)?"":subMenu.getIcon();
- 				String url = (subMenu.getUrl()==null)?"":subMenu.getUrl();
+ 				String url = (subMenu.getIndexUrl()==null)?"":subMenu.getIndexUrl();
  				html.append("<a href=\"javascript:void(0);\" type=\"menuItem\" name=\""+name+"\" icon=\""+icon+"\" url=\""+url+"\" class=\"easyui-linkbutton\" data-options=\"plain:true,iconCls:'"+subMenu.getIcon()+"'\">"+subMenu.getName()+"</a>");
  			}
  			i++;

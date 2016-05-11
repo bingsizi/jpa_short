@@ -8,7 +8,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
 import com.systop.base.security.menu.support.MenuType;
 import com.systop.core.Constants;
 import com.systop.core.entity.IdEntity;
@@ -41,7 +40,7 @@ public class Menu extends IdEntity implements Serializable{
 	private String permission;// 权限字符串
 	private String available = Constants.YES;// 是否可用
 	private String icon; // 资源图标
-	private String url; // 资源URL
+	private String indexUrl; // 菜单起始url
 	private String className;// 可访问的类名.全路径
 	private String methodName;// 可访问类中的方法.默认为空.表示全部可以访问
 	private String description;// 描述
@@ -53,7 +52,7 @@ public class Menu extends IdEntity implements Serializable{
 	public String getParentName() {
 		return parentName;
 	}
-
+	@Transient
 	public void setParentName(String parentName) {
 		this.parentName = parentName;
 	}
@@ -122,12 +121,12 @@ public class Menu extends IdEntity implements Serializable{
 		this.icon = icon;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getIndexUrl() {
+		return indexUrl;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setIndexUrl(String indexUrl) {
+		this.indexUrl = indexUrl;
 	}
 
 	public String getClassName() {

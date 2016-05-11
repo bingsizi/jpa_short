@@ -16,6 +16,13 @@ public interface BaseService<T> {
 	 * @return
 	 */
 	T find(Serializable id);
+	
+	/**
+	 * 返回全部
+	 * @return
+	 * @author zhangpeiran 2016年5月11日 下午2:02:17
+	 */
+	List<T> findAll();
 
 	/**
 	 * 保存或更新一个指定泛型T对象

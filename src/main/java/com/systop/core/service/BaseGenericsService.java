@@ -31,6 +31,10 @@ public class BaseGenericsService<T extends BaseEntity> implements BaseService<T>
 		return baseDao.find(getEntityClass(), id);
 	}
 
+	@Override
+	public List<T> findAll() {
+		return query("from "+getEntityClass().getSimpleName(),new HashMap<String,Object>());
+	}
 	/**
 	 * @ses {@link Manager#save(Object)})
 	 */
