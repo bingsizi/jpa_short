@@ -1,10 +1,7 @@
 package com.systop.core.init;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
@@ -106,13 +103,13 @@ public class InitService implements ApplicationListener<ContextRefreshedEvent> {
 				serviceManagerManager.roleService.saveUserRole(user.getId(),role.getId());
 				
 				//初始化角色菜单
-				List<Menu> menuList = new ArrayList<>();
-				menuList.add(systemTop);
-				menuList.add(userManager);
-				menuList.add(roleManager);
-				menuList.add(menuManager);
-				menuList.add(onUserManager);
-				serviceManagerManager.menuService.saveRoleMenu(role.getId(), menuList);
+				Long[] menuIds = new Long[5];
+				menuIds[0] = systemTop.getId();
+				menuIds[1] = userManager.getId();
+				menuIds[2] = roleManager.getId();
+				menuIds[3] = menuManager.getId();
+				menuIds[4] = onUserManager.getId();
+				serviceManagerManager.menuService.saveRoleMenu(role.getId(),menuIds);
 				
 			}
 		}

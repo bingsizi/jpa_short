@@ -14,6 +14,7 @@
 			v.title = values[0];
 			v.msg = values[1];
 		}
+		return v;
 	}
 	/**
 	 * 上右弹出

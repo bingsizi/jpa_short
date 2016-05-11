@@ -122,7 +122,7 @@ public class UserSerivce extends BaseGenericsService<User> {
 		if (user != null) {
 			Long[] roleIds = roleService.getRoleIds(user.getId());
 			if (roleIds.length > 0) {
-				Long[] menuIds = menuService.getMenuIds(roleIds);
+				Long[] menuIds = menuService.findMenuIds(roleIds);
 				if (menuIds.length > 0) {
 					return menuService.findByIds(menuIds);
 				}

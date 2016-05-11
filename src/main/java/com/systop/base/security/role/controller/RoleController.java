@@ -1,5 +1,7 @@
 package com.systop.base.security.role.controller;
 
+import java.util.Collections;
+import java.util.List;
 import javax.servlet.ServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.systop.base.security.role.entity.Role;
 import com.systop.core.controller.BaseController;
+import com.systop.core.controller.vo.TreeVo;
 
 /**  
  * 角色管理
@@ -128,5 +131,79 @@ public class RoleController extends BaseController{
 			e.printStackTrace();
 			return getErrorMsg("系统错误:"+e.getMessage());
 		}
+	}
+	/**
+	 * 配置角色菜单项
+	 * @param roleId
+	 * @param menuIds
+	 * @return
+	 */
+	@RequestMapping(value="saveRoleMenu")
+	@ResponseBody
+	public Object saveRoleMenu(Long id,String menuIds){
+		//判断角色ID是否为诶空
+		if(id==null)
+			return getErrorMsg("角色Id不能为空");
+		//验证菜单项是否为空
+		if(StringUtils.isEmpty(menuIds))
+			menuIds=null;
+		else{
+			String[] ids = menuIds.split(",");
+			Long[] longIds =new Long[ids.length];
+			for(int i=0;i<ids.length;i++){
+				longIds[i] = Long.valueOf(ids[i]);
+			}
+			serviceManager.menuService.saveRoleMenu(id, longIds);
+		}
+		return getSuccessMsg("更改配置成功");
+	}
+	/**
+	 * 根据角色展示菜单
+	 * @param roleId
+	 * @return
+	 */
+	@RequestMapping(value="menuList")
+	@ResponseBody
+	public List<TreeVo> menuList(Long id){
+		if(id==null)
+			return Collections.emptyList();
+	    //获得树形全部菜单
+	    List<TreeVo> treeList = serviceManager.menuService.findTreeMenus();
+	    //获得角色拥有的菜单
+	    Long[] menusIds = serviceManager.menuService.findMenuIds(id);
+	    setChecked(treeList,menusIds);
+	    return treeList;
+	}
+	
+	/**
+	 * 设置菜单和角色拥有菜单的配置项
+	 * @param treeList
+	 * @param roleMenuList
+	 */
+	private void setChecked(List<TreeVo> treeList,Long[] menusIds){
+         for(TreeVo tv:treeList){
+        	 tv.setChecked(checkContainsMenu(tv.getId(),menusIds));
+        	 if(!tv.getChildren().isEmpty())
+        		 setChecked(tv.getChildren(),menusIds);
+         }
+	}
+	
+	/**
+	 * 是否含有子菜单
+	 * @param menuId
+	 * @param roleMenuList
+	 * @return
+	 */
+	private boolean checkContainsMenu(String tvId,Long[] menusIds){
+		if(StringUtils.isEmpty(tvId))
+			return false;
+		if(menusIds.length<=0)
+			return false;
+		for(Long menuId:menusIds){
+			if(menuId == Long.valueOf(tvId)){
+				return true;
+			}
+		}
+		return false;
 	}
 }

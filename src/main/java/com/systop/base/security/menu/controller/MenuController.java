@@ -128,9 +128,9 @@ public class MenuController extends BaseController{
 	 * @return
 	 * @author zhangpeiran 2016年5月11日 上午10:34:19
 	 */
-	@RequestMapping(value="rootMenu")
+	@RequestMapping(value="menuTree")
 	@ResponseBody
-	public Object rootMenu(){
-		return serviceManager.menuService.findRootMenus();
+	public Object menuTree(){
+		return serviceManager.menuService.findTreeMenus();
 	}
 }

@@ -158,7 +158,7 @@ function del(){
 			<tr>
 				<td class="td_marked">上级菜单：</td>
 				<td class="td_content">
-				   <select style="width: 140px;" id="parentId" name="parentId" class="easyui-combobox" data-options="url:'${ctx}/security/menu/rootMenu',valueField:'id',textField:'name',editable:false,value:''"></select>
+			        <select name="parentId" class="easyui-combotree" style="width:200px;" data-options="url:'${ctx}/security/menu/menuTree'"></select>
 				</td>
 			</tr>
 			<tr>

@@ -8,12 +8,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.annotation.Resource;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import com.systop.base.security.menu.entity.Menu;
 import com.systop.base.security.menu.entity.RoleMenu;
 import com.systop.base.security.menu.support.MenuSeqComparator;
+import com.systop.core.controller.vo.TreeVo;
 import com.systop.core.dao.jpa.Page;
 import com.systop.core.service.BaseGenericsService;
 import com.systop.core.utils.StringUtil;
@@ -31,6 +31,9 @@ public class MenuService extends BaseGenericsService<Menu>{
 	@Resource
 	private RoleMenuService roleMenuService;
 	
+	/**
+	 * 保存菜单
+	 */
 	@Override
 	public void save(Menu menu){
 		if(menu.getParentId()!=null){
@@ -62,7 +65,7 @@ public class MenuService extends BaseGenericsService<Menu>{
 	public List<Menu> findChilds(Long id){
 		Map<String,Object> paramMap = new HashMap<>();
 		paramMap.put("parentId",id);
-		return super.query("from Menu where parentId=:parentId",paramMap);
+		return super.query("from Menu where parentId=:parentId order by seq",paramMap);
 	}
 	
 	/**
@@ -98,12 +101,16 @@ public class MenuService extends BaseGenericsService<Menu>{
 	 * @param menuIds
 	 * @author zhangpeiran 2016年5月10日 上午8:57:22
 	 */
-	public void saveRoleMenu(Long roleId,List<Menu> menuList){
-		for(Menu menu:menuList){
+	public void saveRoleMenu(Long roleId,Long[] menuIds){
+		//首先删除角色原有菜单配置
+		Map<String,Object> paramMap = new HashMap<>();
+		paramMap.put("roleId", roleId);
+		roleMenuService.executeUpdate("delete from RoleMenu where roleId=:roleId", paramMap);
+		//保存新的菜单项
+		for(Long menuId:menuIds){
 			RoleMenu rm = new RoleMenu();
 			rm.setRoleId(roleId);
-			rm.setMenuId(menu.getId());
-			rm.setMenuType(menu.getType());
+			rm.setMenuId(menuId);
 			roleMenuService.save(rm);
 		}
 	}
@@ -123,7 +130,7 @@ public class MenuService extends BaseGenericsService<Menu>{
 	   * @return
 	   * @author zhangpeiran 2016年5月9日 上午10:35:50
 	   */
-	  public Long[] getMenuIds(Long...roleIds){
+	  public Long[] findMenuIds(Long...roleIds){
 		  Map<String,Object> paramMap = new HashMap<>();
 		  List<RoleMenu> list = roleMenuService.query("from RoleMenu where roleId in ("+StringUtil.getSplitComma(roleIds)+")",paramMap);
 		  Long[] menuIds = new Long[list.size()];
@@ -153,7 +160,47 @@ public class MenuService extends BaseGenericsService<Menu>{
      public int countNum(){
     	return  super.baseDao.count("from Menu",null);
      }
-     
+ 	/**
+ 	 * 获得所有菜单,以属性结构显示
+ 	 */
+ 	public List<TreeVo> findTreeMenus() {
+ 		List<TreeVo> treeList = new ArrayList<TreeVo>();
+ 		List<Menu> rootMenuList = findRootMenus();
+ 	    if(rootMenuList.size()>0){
+ 	    	for(Menu menu:rootMenuList){
+ 	    		TreeVo tv = new TreeVo();
+ 	    		tv.setId(menu.getId()+"");
+ 	    		tv.setText("["+menu.getType()+"]"+menu.getName());
+ 	    		tv.setIconCls(menu.getIcon());
+ 	    		setChildrenList(menu,tv);
+ 	    		treeList.add(tv);
+ 	    	}
+ 	    }
+ 	    return treeList;
+ 	}
+ 	
+ 	/**
+ 	 * 设置子菜单List
+ 	 * @param menu
+ 	 * @param tv
+ 	 * @return
+ 	 */
+ 	private Menu setChildrenList(Menu menu,TreeVo tv){
+ 		List<Menu> childrenList = findChilds(menu.getId());
+ 		if(childrenList.size()>0){
+ 			List<TreeVo> treeList = new ArrayList<TreeVo>();
+ 			for(Menu tempMenu:childrenList){
+ 				TreeVo treevo = new TreeVo();
+ 				treevo.setId(tempMenu.getId()+"");
+ 				treevo.setText("["+menu.getType()+"]"+tempMenu.getName());
+ 				treevo.setIconCls(tempMenu.getIcon());
+ 	    		treeList.add(treevo);
+ 	    		setChildrenList(tempMenu,treevo);
+ 			}
+ 			tv.setChildren(treeList);
+ 		}
+ 		return menu;
+ 	}
     /********************************************************************根据菜单List生成菜单html**************************************************/
  	/**
  	 * 根据menuList获得菜单html

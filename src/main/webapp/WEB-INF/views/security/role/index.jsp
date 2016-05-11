@@ -52,12 +52,12 @@ function saveMenu(){
 		}
 		//提交数据
 		$.ajax({
-			  url: '${ctx}/role/saveRoleMenu.do',
+			  url: '${ctx}/security/role/saveRoleMenu',
 			  dataType: 'json',
 			  type:'post',
-			  data: {roleId:row.roleId,menuIds:s},
+			  data: {id:row.id,menuIds:s},
 			  success: function(data){
-				  showFadeMessage("系统消息",data.message);
+				  Popbox.topCenter(data.message);
 				  if(data.success){
 					  $("#menuDialog").dialog({modal:true}).dialog("close");
 				  }
@@ -133,12 +133,12 @@ function del(){
 				return ;
 			}
 			//提交数据
-			$.getJSON("${ctx}/role/deleteRole.do",{id:selected.roleId},function(json){
+			$.getJSON("${ctx}/security/role/delete",{id:selected.id},function(json){
 				if(json.success){
 					var index = $('#roleGrid').datagrid('getRowIndex', selected);
 					$('#roleGrid').datagrid('deleteRow', index);
 				}
-				showFadeMessage("系统消息",json.message);
+				Popbox.topCenter(json.message);
 			});
 		}
 	});
@@ -149,12 +149,8 @@ function setMenu(){
 	var selected = getSelected();
 	if(selected){
 	    $('#menuTree').tree({  
-	    	url:'${ctx}/role/menuListByRoleId.do?roleId='+selected.roleId
+	    	url:'${ctx}/security/role/menuList?id='+selected.id
 	    });  
-	    if(selected.roleType=="系统管理员")
-	    	$("#menuSave").hide();
-	    else
-	    	$("#menuSave").show();
 	    $("#menuDialog").dialog({modal:true}).dialog("open").dialog('setTitle','角色菜单配置');
 	} else {
  		$.messager.alert('消息','请选择角色!','warning');
@@ -172,10 +168,10 @@ function setMenu(){
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-menu',plain:true" onclick="setMenu();">菜单</a>
 </div>
 <!-- 增加/修改角色框 -->
-<div id="roleDialog" class="easyui-dialog" style="width:390px; height:250px; padding:10px 20px;" closed="true">
+<div id="roleDialog" class="easyui-dialog" style="width:390px; height:260px;" closed="true">
 	<form id="submitForm">
 	    <input type="hidden" name="id"/>
-		<table width="100%" cellpadding="0" cellspacing="0" class="oper_table">
+		<table width="100%"  cellpadding="0" cellspacing="0" class="oper_table">
 			<tr>
 				<td class="td_marked">标识:</td>
 				<td class="td_content">
@@ -191,7 +187,7 @@ function setMenu(){
 				</td>
 			</tr>
 			<tr>
-			   <td class="td_content" colspan="2">
+			   <td class="td_content" colspan="2" align="center">
 			        <a href="#" id="save" onclick="formSubmit('save')" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">保存</a>
 					<a href="#" id="edit" onclick="formSubmit('edit')" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">更新</a>
 					<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="javascript:$('#roleDialog').dialog('close');">取消</a>
