@@ -20,7 +20,7 @@
         <property name="maxAge" value="180000"/>
     </bean>
 
-    <!-- 会话DAO -->
+    <!-- 会话DAO,Shiro提供SessionDAO用于会话的CRUD，即DAO（Data Access Object）模式实现 -->
     <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
         <property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>
         <property name="sessionIdGenerator" ref="sessionIdGenerator"/>
