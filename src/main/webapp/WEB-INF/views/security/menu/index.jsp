@@ -74,15 +74,18 @@ $(function(){
 		footer:'#ft'
 	});
 });
-
 // 新增
 function add(){
 	$("#menuDialog").dialog({modal:true}).dialog("open").dialog('setTitle','新增菜单');
  	$("#save").show();
  	$("#edit").hide();
  	$("#menuForm").form('clear');
- 	var url = "${ctx}/security/menu/rootMenu";
-	$("#parentId").combobox("reload", url);
+ 	var url = "${ctx}/security/menu/menuTree?random="+new Date();
+ 	$("#parentId").combotree({
+ 		onShowPanel:function(){
+ 			alert("我才不走");
+ 		}
+ 	})
 }
 
 //修改
@@ -158,7 +161,9 @@ function del(){
 			<tr>
 				<td class="td_marked">上级菜单：</td>
 				<td class="td_content">
-			        <select name="parentId" class="easyui-combotree" style="width:200px;" data-options="url:'${ctx}/security/menu/menuTree'"></select>
+			        <select name="parentId" class="easyui-combotree" style="width:200px;" data-options="url:'${ctx}/security/menu/menuTree',onShowPanel:function(){
+			           $(this).combotree('reload','${ctx}/security/menu/menuTree')
+			        }"></select>
 				</td>
 			</tr>
 			<tr>
@@ -174,17 +179,25 @@ function del(){
 				</td>
 			</tr>
 			<tr>
+				<td class="td_marked">图标：</td>
+				<td class="td_content">
+				   <input type="text" name="icon" class="easyui-validatebox" data-options="validType:'length[0,20]'"/>
+				</td>
+			</tr>
+			<tr>
 				<td class="td_marked">权限：</td>
 				<td class="td_content">
 				   <input type="text" name="permission" class="easyui-validatebox" data-options="validType:'length[0,100]'"/>
 				</td>
 			</tr>
+			<tr>
+			   <td class="td_content" align="center" colspan="2">
+				   <a href="#" id="save" onclick="formSubmit('save')" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">保存</a>
+				   <a href="#" id="edit" onclick="formSubmit('edit')" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">更新</a>
+				   <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="javascript:$('#menuDialog').dialog('close');">取消</a>
+			   </td>
+			</tr>
 		</table>
-		<div class="buttonContent" style="text-align: center;">
-			<a href="#" id="save" onclick="formSubmit('save')" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">保存</a>
-			<a href="#" id="edit" onclick="formSubmit('edit')" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">更新</a>
-			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="javascript:$('#menuDialog').dialog('close');">取消</a>
-		</div>
 	</form>
 </div>
 </body>

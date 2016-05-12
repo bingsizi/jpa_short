@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.systop.base.security.user.entity.User;
+import com.systop.core.Constants;
 import com.systop.core.controller.BaseController;
 import com.systop.core.dao.jpa.Page;
 
@@ -163,5 +164,27 @@ public class UserController extends BaseController{
 		}
 		serviceManager.userSerivce.saveUser(user,roleLongIds);
 		return getSuccessMsg("修改用户成功");
+	}
+	/**
+	 * 锁定解锁用户
+	 * @param lock
+	 * @return
+	 * @author zhangpeiran 2016年5月12日 下午2:46:24
+	 */
+	@RequestMapping(value = "locked")
+	@ResponseBody
+	public Object locked(Long id,String lock){
+		if(StringUtils.isEmpty(lock)||id==null){
+			return getErrorMsg("无效操作");
+		}
+		if(lock.equals(Constants.YES)){
+			serviceManager.userSerivce.unLock(id);
+			return getSuccessMsg("");
+		}else if(lock.equals(Constants.NO)){
+			serviceManager.userSerivce.lock(id);
+			return getSuccessMsg("");
+		}else{
+			return getErrorMsg("无效标识");
+		}
 	}
 }

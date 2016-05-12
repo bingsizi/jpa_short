@@ -15,6 +15,7 @@ import com.systop.base.security.menu.service.MenuService;
 import com.systop.base.security.role.entity.Role;
 import com.systop.base.security.role.service.RoleService;
 import com.systop.base.security.user.entity.User;
+import com.systop.core.Constants;
 import com.systop.core.dao.jpa.Page;
 import com.systop.core.service.BaseGenericsService;
 import com.systop.core.utils.DateUtils;
@@ -34,6 +35,29 @@ public class UserSerivce extends BaseGenericsService<User> {
 	private RoleService roleService;
 	@Resource
 	private MenuService menuService;
+	
+	/**
+	 * 锁定用户
+	 * @param id
+	 * @author zhangpeiran 2016年5月12日 下午2:49:22
+	 */
+	public void lock(Long id){
+		Map<String,Object> map = new HashMap<>();
+		map.put("id",id);
+		map.put("locked",Constants.YES);
+		super.executeUpdate("update User set locked=:locked where id=:id", map);
+	}
+	/**
+	 * 解锁用户
+	 * @param id
+	 * @author zhangpeiran 2016年5月12日 下午2:50:47
+	 */
+	public void unLock(Long id){
+		Map<String,Object> map = new HashMap<>();
+		map.put("id",id);
+		map.put("locked",Constants.NO);
+		super.executeUpdate("update User set locked=:locked where id=:id", map);
+	}
 	
 	/**
 	 * 保存用户

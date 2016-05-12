@@ -229,6 +229,7 @@ public class MenuService extends BaseGenericsService<Menu>{
  				String icon = (subMenu.getIcon()==null)?"":subMenu.getIcon();
  				String url = (subMenu.getIndexUrl()==null)?"":subMenu.getIndexUrl();
  				html.append("<a href=\"javascript:void(0);\" type=\"menuItem\" name=\""+name+"\" icon=\""+icon+"\" url=\""+url+"\" class=\"easyui-linkbutton\" data-options=\"plain:true,iconCls:'"+subMenu.getIcon()+"'\">"+subMenu.getName()+"</a>");
+ 			    html.append("<br>");
  			}
  			i++;
  			html.append("</div>");

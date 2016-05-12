@@ -47,6 +47,30 @@ function edit(){
 		$.messager.alert('消息','请选择要修改的数据!','warning');
 	}
 }
+/**
+ * 锁定/解锁用户
+ */
+function locked(){
+	var row = getSelected();
+	if(row){
+		var msg = "";
+		if(row.locked=="Y"){
+			msg = "是否要解锁这个用户";
+		}else{
+			msg = "是否要锁定这个用户";
+		}
+		var flag = confirm(msg);
+		if(flag){
+			$.getJSON("${ctx}/security/user/locked",{id:row.id,lock:row.locked},function(json){
+				if(json.success){
+					 $("#userGrid").datagrid("reload");
+				}
+			});
+		}
+	}else{
+		$.messager.alert('消息','请选择要修改的数据!','warning');
+	}
+}
 //提交表单
 function formSubmit(operation){
 	//验证表达提交是否有问题
@@ -104,7 +128,15 @@ $(function(){
 		columns:[[
 	        {field:"username", title:"用户名", width:10},
 			{field:"realName", title:"真实姓名", width:10},
-			{field:"locked", title:"锁定状态", width:10},
+			{field:"locked", title:"锁定状态", width:10,formatter:function(value){
+				if(value=="N"){
+					return "<span style=\"color:green;\">"+value+"</span>"
+				}else if(value=="Y"){
+					return "<span style=\"color:red;\">"+value+"</span>"
+				}else{
+					return value;
+				}
+			}},
 			{field:"orgName", title:"组织机构", width:10},
 			{field:"createTime", title:"创建日期", width:10}
 		]],
@@ -135,7 +167,7 @@ $(function(){
 	<div id="ft" style="padding:2px 5px;">
 		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="add();">新增</a>
 		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="edit();">修改</a>
-		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="del();">删除</a>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="locked();">锁定/解锁</a>
 	</div>
 	<!-- 增加/修改用户-->
 	<div id="userDialog" class="easyui-dialog" style="width:390px; height:400px; padding:10px 20px;" closed="true">

@@ -5,8 +5,11 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.systop.core.Constants;
 import com.systop.core.entity.IdEntity;
+import com.systop.core.json.JsonDateSerializer;
 
 /**
  * user用户类
@@ -30,6 +33,7 @@ public class User extends IdEntity implements Serializable{
 	private String username;//用户名
 	private String password;//密码
 	private String locked = Constants.NO;//是否锁定
+	@JsonSerialize(using=JsonDateSerializer.class)
 	private Date createTime;//创建时间
 	/** 其他属性**/
 	private String realName;//真实姓名
