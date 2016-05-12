@@ -4,7 +4,7 @@ import java.util.Date;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.systop.core.Constants;
 import com.systop.core.controller.vo.TreeGridVO;
-import com.systop.core.json.JsonDateTimeSerializer;
+import com.systop.core.json.JsonDateSerializer;
 
 /**
  * 组织机构树形grid数据
@@ -20,7 +20,7 @@ public class OrgTreeGridVO extends TreeGridVO {
 	private Long parentId;// 父机构id
 	private String parentIds;// 父编号列表 例如:如0/1/2/表示其祖先是2、1、0；其中根节点父Id为0
 	private String available = Constants.YES;// 是否可用
-	@JsonSerialize(as=JsonDateTimeSerializer.class)
+	@JsonSerialize(using = JsonDateSerializer.class)
 	private Date createTime;// 创建时间
 
 	public String getName() {

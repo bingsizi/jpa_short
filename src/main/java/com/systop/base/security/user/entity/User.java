@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import com.systop.core.Constants;
 import com.systop.core.entity.IdEntity;
 
@@ -31,7 +33,39 @@ public class User extends IdEntity implements Serializable{
 	private String salt;//盐加密用的
 	private String locked = Constants.NO;//是否锁定
 	/** 其他属性**/
+	private String realName;//真实姓名
+	private Long orgId;//所属机构Id
 	
+	/** 临时属性 **/
+	private String orgName;//所属机构名称
+	
+	@Transient
+	public String getOrgName() {
+		return orgName;
+	}
+	
+	/** get and set **/
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(Long orgId) {
+		this.orgId = orgId;
+	}
+
 	public String getUsername() {
 		return username;
 	}

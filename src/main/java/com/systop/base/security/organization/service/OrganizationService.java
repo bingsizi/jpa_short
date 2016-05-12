@@ -13,6 +13,7 @@ import com.systop.base.security.organization.support.OrgTreeGridVO;
 import com.systop.core.Constants;
 import com.systop.core.controller.vo.TreeVo;
 import com.systop.core.service.BaseGenericsService;
+import com.systop.core.utils.DateUtils;
 
 /**  
  * 组织机构业务方法
@@ -29,6 +30,9 @@ public class OrganizationService extends BaseGenericsService<Organization>{
 	 */
 	@Override
 	public void save(Organization org) {
+		if(org.getCreateTime()==null){
+			org.setCreateTime(DateUtils.getSystemTime());
+		}
 		if(org.getParentId()!=null){
 			Organization parentOrg = find(org.getParentId());
 			if(parentOrg!=null){

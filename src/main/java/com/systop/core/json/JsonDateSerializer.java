@@ -14,7 +14,10 @@ public class JsonDateSerializer extends com.fasterxml.jackson.databind.JsonSeria
 	public void serialize(Date date, com.fasterxml.jackson.core.JsonGenerator gen,
 			com.fasterxml.jackson.databind.SerializerProvider provider)
 			throws IOException, com.fasterxml.jackson.core.JsonProcessingException {
-		 String formattedDate = dateFormat.format(date);
-         gen.writeString(formattedDate);
+    	String formattedDate ="";
+    	if(date!=null){
+    		formattedDate = dateFormat.format(date);
+    	}
+        gen.writeString(formattedDate);
 	}
 }

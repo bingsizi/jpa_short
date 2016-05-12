@@ -9,6 +9,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 import com.systop.base.security.menu.entity.Menu;
 import com.systop.base.security.menu.support.MenuType;
+import com.systop.base.security.organization.entity.Organization;
 import com.systop.base.security.role.entity.Role;
 import com.systop.base.security.user.entity.User;
 import com.systop.core.Constants;
@@ -105,10 +106,17 @@ public class InitService implements ApplicationListener<ContextRefreshedEvent> {
 				role.setDescription("系统管理员");
 				serviceManagerManager.roleService.save(role);
 				
+				
+				//初始化组织机构
+				Organization org = new Organization();
+				org.setName("最上级部门");
+				serviceManagerManager.organizationService.save(org);
+				
 				//初始化用户
 				User user = new User();
 				user.setUsername("admin");
 				user.setPassword("manager");
+				user.setOrgId(org.getId());
 				serviceManagerManager.userSerivce.save(user);
 				
 				//初始化用户角色
