@@ -54,6 +54,7 @@ public class InitService implements ApplicationListener<ContextRefreshedEvent> {
 				userManager.setSeq(1);
 				userManager.setIcon("icon-user");
 				userManager.setPermission("/security/user");
+				userManager.setIndexUrl("/security/user/index");
 				serviceManagerManager.menuService.save(userManager);
 				
 				Menu orgManager = new Menu();
