@@ -1,11 +1,11 @@
 package com.systop.base.security.user.controller;
 
 import javax.servlet.ServletRequest;
-
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import com.systop.base.security.user.entity.User;
 import com.systop.core.controller.BaseController;
 import com.systop.core.dao.jpa.Page;
 
@@ -52,5 +52,116 @@ public class UserController extends BaseController{
 	@ResponseBody
 	public Object orgTree(){
 		return serviceManager.organizationService.orgTreeList(null);
+	}
+	/**
+	 * 返回全部角色
+	 * @return
+	 * @author zhangpeiran 2016年5月12日 下午1:36:49
+	 */
+	@RequestMapping(value = "roleList")
+	@ResponseBody
+	public Object roleList(){
+		return serviceManager.roleService.findAll();
+	}
+	/**
+	 * 返回当前用户拥有的角色
+	 * @return
+	 * @author zhangpeiran 2016年5月12日 下午2:04:37
+	 */
+	@RequestMapping(value = "roleIds")
+	@ResponseBody
+	public Object roleIds(Long id){
+		return serviceManager.roleService.findRoleIds(id);
+	}
+	/**
+	 * 保存user
+	 * @param user
+	 * @return
+	 * @author zhangpeiran 2016年5月12日 下午12:00:13
+	 */
+	@RequestMapping(value = "save")
+	@ResponseBody
+	public Object save(ServletRequest request){
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		String realName = request.getParameter("realName");
+		String orgId = request.getParameter("orgId");
+		String[] roleIds = request.getParameterValues("roleIds");
+		
+		if(StringUtils.isEmpty(username)){
+			return getErrorMsg("用户名不能为空");
+		}
+		if(StringUtils.isEmpty(password)){
+			return getErrorMsg("密码不能为空");
+		}
+		if(StringUtils.isEmpty(orgId)){
+			return getErrorMsg("组织机构不能为空");
+		}
+		if(roleIds.length<=0){
+			return getErrorMsg("角色不能为空");
+		}
+		User user = new User();
+		user.setUsername(username);
+		user.setPassword(password);
+		user.setRealName(realName);
+		user.setOrgId(Long.valueOf(orgId));
+		
+		Long[] roleLongIds = new Long[roleIds.length];
+		int i=0;
+		for(String id:roleIds){
+			roleLongIds[i++] = Long.valueOf(id);
+		}
+		serviceManager.userSerivce.saveUser(user,roleLongIds);
+		return getSuccessMsg("增加用户成功");
+	}
+	/**
+	 * 修改user
+	 * @param user
+	 * @return
+	 * @author zhangpeiran 2016年5月12日 下午12:00:13
+	 */
+	@RequestMapping(value = "update")
+	@ResponseBody
+	public Object update(ServletRequest request){
+		String id = request.getParameter("id");
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		String realName = request.getParameter("realName");
+		String orgId = request.getParameter("orgId");
+		String[] roleIds = request.getParameterValues("roleIds");
+		
+		if(StringUtils.isEmpty(id)){
+			return getErrorMsg("ID不能为空");
+		}
+		if(StringUtils.isEmpty(username)){
+			return getErrorMsg("用户名不能为空");
+		}
+		if(StringUtils.isEmpty(password)){
+			return getErrorMsg("密码不能为空");
+		}
+		if(StringUtils.isEmpty(orgId)){
+			return getErrorMsg("组织机构不能为空");
+		}
+		if(roleIds.length<=0){
+			return getErrorMsg("角色不能为空");
+		}
+		
+		User user = serviceManager.userSerivce.find(Long.valueOf(id));
+		if(user==null){
+			return getErrorMsg("未发现要修改的用户");
+		}
+		
+		user.setUsername(username);
+		user.setPassword(password);
+		user.setRealName(realName);
+		user.setOrgId(Long.valueOf(orgId));
+		
+		Long[] roleLongIds = new Long[roleIds.length];
+		int i=0;
+		for(String roleId:roleIds){
+			roleLongIds[i++] = Long.valueOf(roleId);
+		}
+		serviceManager.userSerivce.saveUser(user,roleLongIds);
+		return getSuccessMsg("修改用户成功");
 	}
 }

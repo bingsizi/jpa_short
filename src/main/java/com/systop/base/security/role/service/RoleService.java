@@ -72,13 +72,13 @@ public class RoleService extends BaseGenericsService<Role> {
 	 * @return
 	 * @author zhangpeiran 2016年5月9日 上午10:35:50
 	 */
-	public Long[] getRoleIds(Long userId) {
+	public Long[] findRoleIds(Long userId) {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("userId", userId);
 		List<UserRole> list = userRoleService.query("from UserRole where userId = :userId ", paramMap);
 		Long[] roleIds = new Long[list.size()];
 		for (int i = 0; i < list.size(); i++) {
-			roleIds[i] = list.get(0).getRoleId();
+			roleIds[i] = list.get(i).getRoleId();
 		}
 		return roleIds;
 	}
@@ -91,6 +91,11 @@ public class RoleService extends BaseGenericsService<Role> {
 	 * @author zhangpeiran 2016年5月9日 下午5:29:56
 	 */
 	public void saveUserRole(Long userId, Long... roleIds) {
+		//先删除用户角色关系
+		Map<String,Object> map = new HashMap<>();
+		map.put("userId",userId);
+		userRoleService.executeUpdate("delete from UserRole where userId = :userId",map);
+		//再保存
 		for (Long id : roleIds) {
 			UserRole ur = new UserRole();
 			ur.setUserId(userId);

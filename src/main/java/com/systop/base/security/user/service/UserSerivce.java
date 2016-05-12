@@ -17,6 +17,7 @@ import com.systop.base.security.role.service.RoleService;
 import com.systop.base.security.user.entity.User;
 import com.systop.core.dao.jpa.Page;
 import com.systop.core.service.BaseGenericsService;
+import com.systop.core.utils.DateUtils;
 
 /**
  * 用户业务层
@@ -33,6 +34,22 @@ public class UserSerivce extends BaseGenericsService<User> {
 	private RoleService roleService;
 	@Resource
 	private MenuService menuService;
+	
+	/**
+	 * 保存用户
+	 * @param user
+	 * @param roleIds
+	 * @author zhangpeiran 2016年5月12日 下午1:52:37
+	 */
+	public void saveUser(User user,Long[] roleIds){
+		//先保存user
+		if(user.getCreateTime()==null){
+			user.setCreateTime(DateUtils.getSystemTime());
+		}
+		super.save(user);
+		//再保存用户角色
+		roleService.saveUserRole(user.getId(), roleIds);
+	}
 	
 	/**
 	 * 分页查询user
@@ -101,7 +118,7 @@ public class UserSerivce extends BaseGenericsService<User> {
 		Set<String> roleSet = new HashSet<>();
 		User user = findByUsername(username);
 		if (user != null) {
-			Long[] roleIds = roleService.getRoleIds(user.getId());
+			Long[] roleIds = roleService.findRoleIds(user.getId());
 			if (roleIds.length > 0) {
 				List<Role> roleList = roleService.findByIds(roleIds);
 				for (Role role : roleList) {
@@ -122,7 +139,7 @@ public class UserSerivce extends BaseGenericsService<User> {
 	public List<Role> findRoles(Long id) {
 		User user = super.find(id);
 		if (user != null) {
-			Long[] roleIds = roleService.getRoleIds(user.getId());
+			Long[] roleIds = roleService.findRoleIds(user.getId());
 			if (roleIds.length > 0) {
 				return roleService.findByIds(roleIds);
 			}
@@ -163,7 +180,7 @@ public class UserSerivce extends BaseGenericsService<User> {
 	public List<Menu> findMenus(Long id) {
 		User user = super.find(id);
 		if (user != null) {
-			Long[] roleIds = roleService.getRoleIds(user.getId());
+			Long[] roleIds = roleService.findRoleIds(user.getId());
 			if (roleIds.length > 0) {
 				Long[] menuIds = menuService.findMenuIds(roleIds);
 				if (menuIds.length > 0) {
