@@ -55,23 +55,35 @@ public class InitService implements ApplicationListener<ContextRefreshedEvent> {
 				userManager.setPermission("/security/user");
 				serviceManagerManager.menuService.save(userManager);
 				
+				Menu orgManager = new Menu();
+				orgManager.setName("组织机构管理");
+				orgManager.setParentId(systemTop.getId());
+				orgManager.setParentIds(systemTopParentIds);
+				orgManager.setType(MenuType.菜单);
+				orgManager.setSeq(2);
+				orgManager.setIcon("icon-org");
+				orgManager.setPermission("/security/org");
+				orgManager.setIndexUrl("/security/org/index");
+				serviceManagerManager.menuService.save(orgManager);
+				
 				Menu roleManager = new Menu();
 				roleManager.setName("角色管理");
 				roleManager.setParentId(systemTop.getId());
 				roleManager.setParentIds(systemTopParentIds);
 				roleManager.setType(MenuType.菜单);
-				roleManager.setSeq(2);
+				roleManager.setSeq(3);
 				roleManager.setIcon("icon-role");
 				roleManager.setPermission("/security/role");
 				roleManager.setIndexUrl("/security/role/index");
 				serviceManagerManager.menuService.save(roleManager);
+				
 				
 				Menu menuManager = new Menu();
 				menuManager.setName("菜单管理");
 				menuManager.setParentId(systemTop.getId());
 				menuManager.setParentIds(systemTopParentIds);
 				menuManager.setType(MenuType.菜单);
-				menuManager.setSeq(3);
+				menuManager.setSeq(4);
 				menuManager.setIcon("icon-menu");
 				menuManager.setPermission("/security/menu");
 				menuManager.setIndexUrl("/security/menu/index");
@@ -82,7 +94,7 @@ public class InitService implements ApplicationListener<ContextRefreshedEvent> {
 				onUserManager.setParentId(systemTop.getId());
 				onUserManager.setParentIds(systemTopParentIds);
 				onUserManager.setType(MenuType.菜单);
-				onUserManager.setSeq(4);
+				onUserManager.setSeq(5);
 				onUserManager.setIcon("icon-online");
 				onUserManager.setPermission("/security/online");
 				serviceManagerManager.menuService.save(onUserManager);
@@ -103,12 +115,13 @@ public class InitService implements ApplicationListener<ContextRefreshedEvent> {
 				serviceManagerManager.roleService.saveUserRole(user.getId(),role.getId());
 				
 				//初始化角色菜单
-				Long[] menuIds = new Long[5];
+				Long[] menuIds = new Long[6];
 				menuIds[0] = systemTop.getId();
 				menuIds[1] = userManager.getId();
-				menuIds[2] = roleManager.getId();
-				menuIds[3] = menuManager.getId();
-				menuIds[4] = onUserManager.getId();
+				menuIds[2] = orgManager.getId();
+				menuIds[3] = roleManager.getId();
+				menuIds[4] = menuManager.getId();
+				menuIds[5] = onUserManager.getId();
 				serviceManagerManager.menuService.saveRoleMenu(role.getId(),menuIds);
 				
 			}
