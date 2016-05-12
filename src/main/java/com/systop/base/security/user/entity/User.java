@@ -1,11 +1,10 @@
 package com.systop.base.security.user.entity;
 
 import java.io.Serializable;
-
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
 import com.systop.core.Constants;
 import com.systop.core.entity.IdEntity;
 
@@ -30,8 +29,8 @@ public class User extends IdEntity implements Serializable{
 	/**必要属性**/
 	private String username;//用户名
 	private String password;//密码
-	private String salt;//盐加密用的
 	private String locked = Constants.NO;//是否锁定
+	private Date createTime;//创建时间
 	/** 其他属性**/
 	private String realName;//真实姓名
 	private Long orgId;//所属机构Id
@@ -48,6 +47,14 @@ public class User extends IdEntity implements Serializable{
 
 	public void setOrgName(String orgName) {
 		this.orgName = orgName;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	public String getRealName() {
@@ -80,14 +87,6 @@ public class User extends IdEntity implements Serializable{
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getSalt() {
-		return salt;
-	}
-
-	public void setSalt(String salt) {
-		this.salt = salt;
 	}
 
 	public String getLocked() {

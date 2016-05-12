@@ -1,5 +1,6 @@
 package com.systop.base.security.user.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,6 +15,7 @@ import com.systop.base.security.menu.service.MenuService;
 import com.systop.base.security.role.entity.Role;
 import com.systop.base.security.role.service.RoleService;
 import com.systop.base.security.user.entity.User;
+import com.systop.core.dao.jpa.Page;
 import com.systop.core.service.BaseGenericsService;
 
 /**
@@ -31,6 +33,47 @@ public class UserSerivce extends BaseGenericsService<User> {
 	private RoleService roleService;
 	@Resource
 	private MenuService menuService;
+	
+	/**
+	 * 分页查询user
+	 * @param orgId
+	 * @param username
+	 * @param realName
+	 * @return
+	 * @author zhangpeiran 2016年5月12日 上午11:08:10
+	 */
+	public Page findPage(Page page,Long orgId,String username,String realName){
+	    String hql = "select u,o.name from User u,Organization o where u.orgId = o.id ";
+	    Map<String,Object> paramMap = new HashMap<>();
+	    if(orgId!=null){
+	    	hql+=" and o.id =:orgId";
+	    	paramMap.put("orgId", orgId);
+	    }
+	    if(StringUtils.isNoneEmpty(username)){
+	    	hql+=" and u.username like :username";
+	    	paramMap.put("username","%"+username+"%");
+	    }
+	    if(StringUtils.isNoneEmpty(realName)){
+	    	hql+=" and u.realName like :realName";
+	    	paramMap.put("realName","%"+realName+"%");
+	    }
+	    Page returnPage = super.pageQuery(page, hql, paramMap);
+	    //进行二次封装
+	    if(returnPage.getTotal()>0){
+	    	List<User> userList = new ArrayList<>();
+	    	for(Object obj:returnPage.getData()){
+	    		Object[] objs = (Object[])obj;
+	    		User user = (User)objs[0];
+	    		String orgName = objs[1].toString();
+	    		if(StringUtils.isNotEmpty(orgName)){
+	    			user.setOrgName(orgName);
+	    		}
+	    		userList.add(user);
+	    	}
+	    	returnPage.setData(userList);
+	    }
+	    return returnPage;
+	}
 
 	/**
 	 * 根据用户名得到用户

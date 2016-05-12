@@ -102,7 +102,7 @@ public class OrganizationService extends BaseGenericsService<Organization>{
 	 * @return
 	 * @author zhangpeiran 2016年5月12日 上午9:09:27
 	 */
-	public List<TreeVo> deptTreeList(Long id){
+	public List<TreeVo> orgTreeList(Long id){
 		List<TreeVo> list = new ArrayList<TreeVo>();
 		//获得根节点
 		List<Organization> rootList = new ArrayList<>();
