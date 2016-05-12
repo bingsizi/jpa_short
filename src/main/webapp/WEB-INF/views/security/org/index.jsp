@@ -187,12 +187,14 @@ $(function(){
 				   <input type="text" name="name" class="easyui-validatebox" data-options="required:true,validType:'length[1,20]'"/>
 				</td>
 			</tr>
+			<tr>
+			   <td class="td_content" align="center" colspan="2">
+			        <a href="#" id="save" onclick="formSubmit('save')" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">保存</a>
+					<a href="#" id="edit" onclick="formSubmit('edit')" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">更新</a>
+					<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="javascript:$('#orgDialog').dialog('close');">取消</a>
+			   </td>
+			</tr>
 		</table>
-		<div class="buttonContent" style="text-align: center;">
-			<a href="#" id="save" onclick="formSubmit('save')" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">保存</a>
-			<a href="#" id="edit" onclick="formSubmit('edit')" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">更新</a>
-			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="javascript:$('#orgDialog').dialog('close');">取消</a>
-		</div>
 	</form>
 </div>
 </body>
