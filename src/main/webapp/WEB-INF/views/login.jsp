@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="/common/jqueryEasyUi.jsp"%>
+<script type="text/javascript" src="${ctx}/static/js/top.pup.js"></script>
 <title>登陆页面</title>
 <script type="text/javascript">
 function submitForm(){
