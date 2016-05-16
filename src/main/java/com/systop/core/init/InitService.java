@@ -99,6 +99,7 @@ public class InitService implements ApplicationListener<ContextRefreshedEvent> {
 				onUserManager.setSeq(5);
 				onUserManager.setIcon("icon-online");
 				onUserManager.setPermission("/security/online");
+				menuManager.setIndexUrl("/security/online/index");
 				serviceManagerManager.menuService.save(onUserManager);
 				
 				//初始化角色
