@@ -81,6 +81,7 @@ public class MenuController extends BaseController{
 	    	if(oldMenu==null)
 	    		return getErrorMsg("未找到要修改的菜单");
 	    	oldMenu.setIndexUrl(menu.getIndexUrl());
+	    	oldMenu.setIcon(menu.getIcon());
 	    	oldMenu.setClassName(menu.getClassName());
 	    	oldMenu.setParentId(menu.getParentId());
 	    	oldMenu.setDescription(menu.getDescription());
