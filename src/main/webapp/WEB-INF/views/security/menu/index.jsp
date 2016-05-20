@@ -80,12 +80,6 @@ function add(){
  	$("#save").show();
  	$("#edit").hide();
  	$("#menuForm").form('clear');
- 	var url = "${ctx}/security/menu/menuTree?random="+new Date();
- 	$("#parentId").combotree({
- 		onShowPanel:function(){
- 			alert("我才不走");
- 		}
- 	})
 }
 
 //修改
@@ -96,6 +90,9 @@ function edit(){
  		$("#save").hide();
  		$("#edit").show();
  		$('#menuId').attr("readonly","readonly");
+ 		if(selected.parentId===null){
+ 			selected.parentId = "";
+ 		}
 		$("#menuForm").form('load', selected);
  	} else {
  		$.messager.alert('消息','请选择要修改的菜单!','warning');
