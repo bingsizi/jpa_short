@@ -1,6 +1,10 @@
 .oper_table {
 	border-left: 1px solid #C1DAD7;
 	border-top: 1px solid #C1DAD7;
+	border-collapse:collapse;
+	font-size: 12px;
+	width: 100%;
+	font-size: 12px;
 }
 
 .oper_table input[type=text], select {
