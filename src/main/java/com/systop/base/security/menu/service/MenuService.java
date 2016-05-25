@@ -39,7 +39,12 @@ public class MenuService extends BaseGenericsService<Menu>{
 		if(menu.getParentId()!=null){
 			Menu pareMenu = find(menu.getParentId());
 			if(pareMenu!=null){
-				String parentIds = (StringUtils.isNoneBlank(pareMenu.getParentIds())?pareMenu.getParentIds():"")+pareMenu.getId()+"/";
+				String parentIds = "";
+				if(StringUtils.isNoneBlank(pareMenu.getParentIds())){
+					parentIds = pareMenu.getParentIds()+pareMenu.getId()+"/";
+				}else{
+					parentIds = "/"+pareMenu.getId()+"/";
+				}
 				menu.setParentIds(parentIds);
 			}
 		}
