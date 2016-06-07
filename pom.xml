@@ -15,7 +15,7 @@
 			<name>Team Nexus Repository</name>
 			<url>http://192.168.1.220:8081/nexus/content/repositories/central/</url> 
 		</repository>
-		
+
 	</repositories>
 	<pluginRepositories> 
 		<pluginRepository> 
@@ -27,7 +27,7 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories> -->
-	
+	<!--增加个注释提交上去-->
 	<dependencies>
         <dependency>
             <groupId>junit</groupId>
